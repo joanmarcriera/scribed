@@ -17,7 +17,13 @@ endpoints that you run and trust. **macOS only.**
 
 ## Screenshots
 
-<!-- TODO: add a menu-bar screenshot / demo GIF -->
+The in-app settings page (opened from the menu bar — served locally on `127.0.0.1`):
+
+<p align="center">
+  <img src="docs/screenshots/settings.png" alt="Scribed settings page" width="420">
+</p>
+
+<!-- TODO: add a menu-bar dropdown + "note ready" notification demo GIF (see CONTRIBUTING) -->
 
 ## Requirements / Prerequisites
 
