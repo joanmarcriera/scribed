@@ -145,8 +145,10 @@ Planned direction (GitHub → Homebrew → Setapp) is described in
 
 MIT — see [LICENSE](LICENSE).
 
-## Support / Buy Me a Coffee
+## Support
 
-If Scribed saves you time, you can support its development:
+Scribed is free and MIT-licensed. If it saves you time, you can support its development:
 
+[![GitHub Sponsors](https://img.shields.io/badge/Sponsor-GitHub-ea4aaa?logo=githubsponsors&logoColor=white)](https://github.com/sponsors/joanmarcriera)
 [![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-support-yellow?logo=buymeacoffee&logoColor=black)](https://www.buymeacoffee.com/joanmarcriera)
+[![Ko-fi](https://img.shields.io/badge/Ko--fi-support-FF5E5B?logo=kofi&logoColor=white)](https://ko-fi.com/joanmarcriera)
