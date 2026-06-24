@@ -149,7 +149,4 @@ MIT — see [LICENSE](LICENSE).
 
 If Scribed saves you time, you can support its development:
 
-[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-support-yellow?logo=buymeacoffee&logoColor=black)](https://www.buymeacoffee.com/TODO-username)
-
-> Maintainer: replace `TODO-username` with your real Buy Me a Coffee username
-> (here and in `.github/FUNDING.yml`).
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-support-yellow?logo=buymeacoffee&logoColor=black)](https://www.buymeacoffee.com/joanmarcriera)
