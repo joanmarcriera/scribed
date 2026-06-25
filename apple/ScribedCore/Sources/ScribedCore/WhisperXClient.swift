@@ -15,6 +15,19 @@ public struct WhisperXClient {
     private let session: URLSession
     public init(session: URLSession = .shared) { self.session = session }
 
+    /// GET {url}/docs — reachable iff HTTP 200 (used by the settings Test button).
+    public func reachable(_ url: String, timeout: TimeInterval = 4) async -> Bool {
+        guard let endpoint = URL(string: url.trimmedTrailingSlashes() + "/docs") else { return false }
+        var request = URLRequest(url: endpoint)
+        request.timeoutInterval = timeout
+        do {
+            let (_, response) = try await session.data(for: request)
+            return (response as? HTTPURLResponse)?.statusCode == 200
+        } catch {
+            return false
+        }
+    }
+
     public func transcribe(
         wavURL: URL, config: TranscribeConfig, timeout: TimeInterval = 3600
     ) async throws -> [String: Any] {

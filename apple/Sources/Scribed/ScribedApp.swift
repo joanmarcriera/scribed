@@ -1,7 +1,7 @@
 import SwiftUI
 
-/// Menu-bar-only app (LSUIElement). The pipeline port lands in Phase C; this is
-/// the shell: a MenuBarExtra menu wired to a WatcherController skeleton.
+/// Menu-bar-only app (LSUIElement). The controller starts its scan loop on init;
+/// the menu and the native Settings scene both share that one controller.
 @main
 struct ScribedApp: App {
     @StateObject private var controller = WatcherController()
@@ -13,7 +13,7 @@ struct ScribedApp: App {
         .menuBarExtraStyle(.menu)
 
         Settings {
-            SettingsView()
+            SettingsView(controller: controller)
         }
     }
 }

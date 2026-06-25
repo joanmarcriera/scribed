@@ -32,7 +32,7 @@ struct StatusMenu: View {
 
         Button("Open meeting-notes folder") { controller.openNotesFolder() }
         Button("Open recordings folder") { controller.openRecordingsFolder() }
-        Button("Settings…") { Self.openSettings() }
+        Button("Settings…") { openAppSettings() }
 
         #if DONATE_ENABLED
         if let url = Links.donateURL {
@@ -50,14 +50,5 @@ struct StatusMenu: View {
 
     private static func intervalLabel(_ seconds: Int) -> String {
         seconds % 60 == 0 ? "\(seconds / 60)m" : "\(seconds)s"
-    }
-
-    /// Open the SwiftUI Settings scene (selector differs across macOS versions).
-    private static func openSettings() {
-        if #available(macOS 14, *) {
-            NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
-        } else {
-            NSApp.sendAction(Selector(("showPreferencesWindow:")), to: nil, from: nil)
-        }
     }
 }

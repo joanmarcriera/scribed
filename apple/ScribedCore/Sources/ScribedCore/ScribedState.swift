@@ -136,6 +136,23 @@ public enum ScribedState {
             write(error + "\n", marker(base, "failed"))
             clearProcessing(base)
         }
+
+        private func removeMarkers(suffix: String) {
+            let items = (try? fm.contentsOfDirectory(
+                at: stateDir, includingPropertiesForKeys: nil)) ?? []
+            for url in items where url.pathExtension == suffix { remove(url) }
+        }
+
+        /// Remove leftover `.processing` markers (call when nothing is running —
+        /// they indicate a prior crash mid-process).
+        public func clearStaleProcessing() { removeMarkers(suffix: "processing") }
+
+        /// Clear all `.failed` (and stale `.processing`) markers so every
+        /// recording gets retried (the "Process now" path).
+        public func retryFailed() {
+            removeMarkers(suffix: "failed")
+            removeMarkers(suffix: "processing")
+        }
     }
 
     /// List recordings still needing work (recursive, sorted, marker-filtered).

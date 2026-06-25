@@ -91,6 +91,20 @@ final class StateTests: XCTestCase {
         XCTAssertFalse(state.isFailed("m"))
     }
 
+    func testClearStaleProcessingAndRetryFailed() throws {
+        let dir = tempDir()
+        let state = try ScribedState.Store(
+            stateDir: dir.appendingPathComponent(".state"),
+            notesDir: dir.appendingPathComponent("notes"))
+        state.markProcessing("a")
+        state.markFailed("b", "boom")
+        state.clearStaleProcessing()
+        XCTAssertFalse(state.isProcessing("a"))
+        XCTAssertTrue(state.isFailed("b"))
+        state.retryFailed()
+        XCTAssertFalse(state.isFailed("b"))
+    }
+
     func testWaitUntilStableTrueWhenSizeConstant() {
         let sizes = [10, 20, 20, 20, 20]
         var i = 0
