@@ -10,6 +10,13 @@ pipeline is: `ffmpeg` (local WAV convert) → **WhisperX** server (transcribe) �
 **Ollama** server (summarise) → validate → write note. Scribed bundles no AI servers; it only
 talks to the WhisperX/Ollama URLs the user configures. macOS only.
 
+> **Two implementations live here.** The repo root is the original **Python** app (the
+> behavioural reference / spec). `apple/` is a **native Swift/SwiftUI rewrite** being built to
+> ship on the Mac App Store + Setapp + direct download (the Python app can't: ffmpeg is GPL, so
+> the native build uses AVFoundation). When changing pipeline behaviour, keep the two in parity.
+> See `apple/README.md` and `docs/distribution-checklist.md`. There is **no cloud path** in
+> either — real transcript content only goes to the user's own WhisperX/Ollama.
+
 ## Commands
 
 ```sh
@@ -27,6 +34,20 @@ uv run python menubar_app.py # run the GUI menu-bar app locally
 
 There is **no linter configured**. `ffmpeg` must be on `PATH` for the transcribe tests and the
 real pipeline (`brew install ffmpeg`); the ffmpeg-resolve test is skipped when ffmpeg is absent.
+
+Native app (`apple/`, requires `brew install xcodegen`):
+
+```sh
+cd apple && xcodegen generate            # REQUIRED after adding/removing .swift files
+cd apple/ScribedCore && swift test       # fast headless core/parity tests
+cd apple && xcodebuild -project Scribed.xcodeproj -scheme Scribed \
+  -configuration Debug -derivedDataPath build CODE_SIGNING_ALLOWED=NO build
+# build a specific edition: add  -xcconfig configs/{Direct,Setapp,AppStore}.xcconfig
+```
+
+`Scribed.xcodeproj` is **generated and gitignored** — regenerate from `apple/project.yml`. The
+UI-free pipeline logic lives in the `ScribedCore` SwiftPM package (Config/State/cleaning/
+validation/prompt/clients/AudioConverter/Pipeline), unit-tested without Xcode or servers.
 
 ## Architecture
 
