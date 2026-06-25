@@ -155,6 +155,7 @@ MIT — see [LICENSE](LICENSE).
 
 Scribed is free and MIT-licensed. If it saves you time, you can support its development:
 
+[![Lemon Squeezy](https://img.shields.io/badge/Lemon%20Squeezy-donate-FFC233?logo=lemonsqueezy&logoColor=black)](https://marcriera.lemonsqueezy.com/checkout/buy/e71c4ce2-f423-4bb6-9883-268e2324035d)
 [![GitHub Sponsors](https://img.shields.io/badge/Sponsor-GitHub-ea4aaa?logo=githubsponsors&logoColor=white)](https://github.com/sponsors/joanmarcriera)
 [![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-support-yellow?logo=buymeacoffee&logoColor=black)](https://www.buymeacoffee.com/joanmarcriera)
 [![Ko-fi](https://img.shields.io/badge/Ko--fi-support-FF5E5B?logo=kofi&logoColor=white)](https://ko-fi.com/joanmarcriera)

@@ -5,9 +5,8 @@ import Foundation
 /// Support menu item is additionally compiled in only for editions that define
 /// `DONATE_ENABLED` (see configs/*.xcconfig), so the Setapp build omits it.
 enum Links {
-    /// Paste the Lemon Squeezy "Buy now" URL, e.g.
-    /// "https://marcriera.lemonsqueezy.com/buy/<variant-uuid>".
-    static let donateURLString = ""
+    /// Lemon Squeezy "Pay What You Want" checkout (marcriera store), verified live.
+    static let donateURLString = "https://marcriera.lemonsqueezy.com/checkout/buy/e71c4ce2-f423-4bb6-9883-268e2324035d"
     static let projectURLString = "https://github.com/Joanmarcriera/scribed"
 
     static var donateURL: URL? {

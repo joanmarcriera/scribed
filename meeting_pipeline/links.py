@@ -10,9 +10,9 @@ README badge) is hidden — the app never shows a dead link.
 
 from __future__ import annotations
 
-# Paste the Lemon Squeezy "Buy now" URL for the Scribed donations product here,
-# e.g. "https://marcriera.lemonsqueezy.com/buy/<variant-uuid>".
-DONATE_URL: str = ""
+# Lemon Squeezy "Pay What You Want" checkout for the Scribed donations product
+# (marcriera store). Verified live (HTTP 200).
+DONATE_URL: str = "https://marcriera.lemonsqueezy.com/checkout/buy/e71c4ce2-f423-4bb6-9883-268e2324035d"
 
 PROJECT_URL: str = "https://github.com/Joanmarcriera/scribed"
 

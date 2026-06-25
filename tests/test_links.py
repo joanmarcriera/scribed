@@ -7,8 +7,8 @@ def _cfg():
     return config_mod.deep_merge(config_mod.DEFAULTS, {})
 
 
-def test_donate_url_defaults_to_empty():
-    assert links.donate_url() == ""
+def test_donate_url_is_configured():
+    assert links.donate_url().startswith("https://")
 
 
 def test_donate_url_strips_whitespace(monkeypatch):
