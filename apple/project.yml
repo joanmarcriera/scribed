@@ -33,6 +33,7 @@ targets:
         GENERATE_INFOPLIST_FILE: YES
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         INFOPLIST_KEY_LSUIElement: YES
+        INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.productivity
         INFOPLIST_KEY_CFBundleDisplayName: Seshat
         INFOPLIST_KEY_NSHumanReadableCopyright: "© 2026 Joan Marc Riera Duocastella · MIT"
         INFOPLIST_KEY_NSAppleEventsUsageDescription: "Seshat opens Terminal to run the optional install commands you choose."
