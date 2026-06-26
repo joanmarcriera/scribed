@@ -21,6 +21,16 @@ struct SettingsView: View {
 
     var body: some View {
         Form {
+            Section("Getting started") {
+                Text("Seshat watches a folder and turns each new recording into a Markdown note using your own WhisperX + Ollama servers. Fill in the URLs below and press Test connection.")
+                    .font(.callout).foregroundStyle(.secondary)
+                folderRow("Watches", Config.resolvePath(draft.recordingsDir).path)
+                folderRow("Writes notes to", Config.resolvePath(draft.notesDir).path)
+                folderRow("Working files", Config.resolvePath(draft.workDir).path)
+                Text("These folders are created automatically if they don't exist. Tip: set the watch folder to an iCloud Drive / Google Drive folder so recordings made elsewhere are processed once they finish syncing.")
+                    .font(.caption).foregroundStyle(.secondary)
+            }
+
             Section("General") {
                 Picker("Watch interval", selection: $draft.watchIntervalSeconds) {
                     ForEach(WatcherController.intervalChoices, id: \.self) { secs in
@@ -88,6 +98,17 @@ struct SettingsView: View {
         }
         .formStyle(.grouped)
         .frame(width: 520, height: 640)
+    }
+
+    private func folderRow(_ label: String, _ path: String) -> some View {
+        HStack(alignment: .firstTextBaseline) {
+            Text(label).foregroundStyle(.secondary)
+            Spacer()
+            Text(path)
+                .font(.callout.monospaced())
+                .textSelection(.enabled)
+                .lineLimit(1).truncationMode(.middle)
+        }
     }
 
     private func dot(_ label: String, _ state: Bool?) -> some View {

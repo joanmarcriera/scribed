@@ -14,7 +14,9 @@ struct StatusMenu: View {
 
         Button("Process now") { controller.processNow() }
         Button("Copy last transcript") { controller.copyLastTranscript() }
+            .disabled(!controller.hasLastNote)
         Button("Open last note") { controller.openLastNote() }
+            .disabled(!controller.hasLastNote)
 
         Menu("Watch interval") {
             ForEach(WatcherController.intervalChoices, id: \.self) { secs in
@@ -32,7 +34,18 @@ struct StatusMenu: View {
 
         Button("Open meeting-notes folder") { controller.openNotesFolder() }
         Button("Open recordings folder") { controller.openRecordingsFolder() }
-        Button("Settings…") { openAppSettings() }
+        Button("Settings…") { controller.showSettings() }
+
+        Menu("Help") {
+            Text("Drop or sync recordings into your watch folder — Seshat turns each new one into a Markdown note.")
+            Text("Supported: wav, m4a, mp3, opus, ogg, flac, aac, mov, mp4, m4v (not mkv/webm).")
+            Divider()
+            Text("Tip: point the watch folder at an iCloud Drive or Google Drive folder. Record on your phone, and Seshat processes each file once it finishes syncing to your Mac.")
+            Divider()
+            Button("Open project page…") {
+                if let url = URL(string: Links.projectURLString) { NSWorkspace.shared.open(url) }
+            }
+        }
 
         #if DONATE_ENABLED
         if let url = Links.donateURL {

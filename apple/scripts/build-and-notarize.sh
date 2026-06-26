@@ -52,7 +52,8 @@ PLIST
 echo "==> Archiving ($EDITION)"
 xcodebuild -project Seshat.xcodeproj -scheme Seshat -configuration Release \
   -xcconfig "$XCCONFIG" -archivePath "$ARCHIVE" \
-  DEVELOPMENT_TEAM="$TEAM_ID" archive
+  -allowProvisioningUpdates \
+  DEVELOPMENT_TEAM="$TEAM_ID" CODE_SIGN_STYLE=Automatic archive
 
 echo "==> Exporting"
 xcodebuild -exportArchive -archivePath "$ARCHIVE" \

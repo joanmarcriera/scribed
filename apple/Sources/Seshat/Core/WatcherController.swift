@@ -8,28 +8,35 @@ import SeshatCore
 /// (nonisolated) SeshatCore pipeline; this class only marshals state + UI.
 @MainActor
 final class WatcherController: ObservableObject {
+    /// Drives the menu-bar badge: nothing / processing (amber) / new note (green).
+    enum Activity { case idle, processing, done }
+
     @Published private(set) var status = "Idle"
+    @Published private(set) var activity: Activity = .idle
     @Published var isPaused = false
     @Published private(set) var allowLocalOllama: Bool
     @Published private(set) var watchIntervalSeconds: Int
+    @Published private(set) var hasLastNote = false
 
     private(set) var config: Config
     private let deps: PipelineDeps
     private let notifier = Notifier()
-    private let firstRun: Bool
+    private let needsOnboarding: Bool
 
     private var isScanning = false
+    private var processingActive = false
+    private var unseenDone = false
     private var deferredBases: Set<String> = []
     private var lastDone: (base: String, note: URL?, transcript: URL?)?
     private var scanTask: Task<Void, Never>?
 
     static let intervalChoices = [10, 20, 60, 300]
+    private static let onboardedKey = "seshat.didOnboard"
 
     init(deps: PipelineDeps = .live()) {
         self.deps = deps
-        let url = Config.defaultConfigURL
-        self.firstRun = !FileManager.default.fileExists(atPath: url.path)
-        var cfg = (try? Config.load(from: url)) ?? Config()
+        self.needsOnboarding = !UserDefaults.standard.bool(forKey: Self.onboardedKey)
+        var cfg = (try? Config.load(from: Config.defaultConfigURL)) ?? Config()
         cfg.applyEnvOverrides()
         self.config = cfg
         self.watchIntervalSeconds = cfg.watchIntervalSeconds
@@ -47,15 +54,24 @@ final class WatcherController: ObservableObject {
 
     private func runAfterLaunch() async {
         applySandboxFoldersIfNeeded()
-        if firstRun {
-            openAppSettings()
+        if needsOnboarding {
+            SettingsWindowController.shared.show(self)
             notifier.notify(title: "Welcome to Seshat",
-                            body: "Configure your WhisperX & Ollama servers to begin.")
+                            body: "Choose your folders and point Seshat at your WhisperX & Ollama servers to begin.")
+            UserDefaults.standard.set(true, forKey: Self.onboardedKey)
         }
         while !Task.isCancelled {
             if !isPaused { await scanOnce() }
             try? await Task.sleep(nanoseconds: UInt64(max(1, watchIntervalSeconds)) * 1_000_000_000)
         }
+    }
+
+    func showSettings() { SettingsWindowController.shared.show(self) }
+
+    private func refreshActivity() {
+        if processingActive { activity = .processing }
+        else if unseenDone { activity = .done }
+        else { activity = .idle }
     }
 
     // MARK: Scanning
@@ -92,13 +108,18 @@ final class WatcherController: ObservableObject {
             recordingsDir: Config.resolvePath(cfg.recordingsDir), state: store)
         if pending.isEmpty {
             if !isPaused { status = "Idle" }
+            refreshActivity()
             return
         }
+        processingActive = true
+        refreshActivity()
         for path in pending {
             status = "Processing \(path.lastPathComponent)…"
             let result = await Pipeline.processOne(path: path, config: cfg, deps: deps)
             handle(result)
         }
+        processingActive = false
+        refreshActivity()
     }
 
     private func handle(_ result: ProcessResult) {
@@ -107,6 +128,8 @@ final class WatcherController: ObservableObject {
             status = "Last note: \(result.base)"
             deferredBases.remove(result.base)
             lastDone = (result.base, result.notePath, result.transcriptPath)
+            hasLastNote = true
+            unseenDone = true
             notifier.notify(title: "✅ Transcribed & summarised",
                             body: "\(result.base) — note ready.")
         case .deferredNeedLocal:
@@ -122,6 +145,7 @@ final class WatcherController: ObservableObject {
         case .skipped:
             break
         }
+        refreshActivity()
     }
 
     // MARK: Manual actions (menu)
@@ -138,12 +162,14 @@ final class WatcherController: ObservableObject {
     func copyLastTranscript() {
         guard let transcript = lastDone?.transcript,
               let text = try? String(contentsOf: transcript, encoding: .utf8) else {
-            notifier.notify(title: "No transcript yet", body: "Process a recording first.")
+            notifier.notify(title: "Nothing to copy yet",
+                            body: "No transcript is available — process a recording first.")
             return
         }
         NSPasteboard.general.clearContents()
         NSPasteboard.general.setString(text, forType: .string)
         notifier.notify(title: "Transcript copied", body: "\(lastDone?.base ?? "") is on the clipboard.")
+        acknowledgeNote()
     }
 
     func openLastNote() {
@@ -152,6 +178,13 @@ final class WatcherController: ObservableObject {
             return
         }
         NSWorkspace.shared.open(note)
+        acknowledgeNote()
+    }
+
+    /// Clear the green "new note" badge once the user has looked at the result.
+    private func acknowledgeNote() {
+        unseenDone = false
+        refreshActivity()
     }
 
     func openNotesFolder() { openFolder(Config.resolvePath(config.notesDir)) }
@@ -187,6 +220,14 @@ final class WatcherController: ObservableObject {
 
     var openAtLogin: Bool { LoginItem.isEnabled }
     func setOpenAtLogin(_ enabled: Bool) { LoginItem.setEnabled(enabled) }
+
+    /// Resolved folders Seshat reads/writes (shown in onboarding so the user
+    /// knows what will be created).
+    var resolvedFolders: (recordings: String, notes: String, work: String) {
+        (Config.resolvePath(config.recordingsDir).path,
+         Config.resolvePath(config.notesDir).path,
+         Config.resolvePath(config.workDir).path)
+    }
 
     /// Persist + apply a full config from the settings window.
     func applyConfig(_ newConfig: Config) {
