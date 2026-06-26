@@ -61,10 +61,11 @@ xcodebuild -exportArchive -archivePath "$ARCHIVE" \
 
 if [ "$EDITION" = "appstore" ]; then
   echo "==> App Store export ready in $EXPORT_DIR"
-  echo "    Upload the .pkg with Transporter, or:"
-  echo "    xcrun notarytool is NOT used for App Store; use:"
-  echo "    xcrun altool --upload-app -t macos -f \"$EXPORT_DIR\"/*.pkg \\"
-  echo "      --apple-id <id> --team-id $TEAM_ID --password <app-specific-pw>"
+  echo "    Upload to App Store Connect with the App Store Connect API key:"
+  echo "      xcrun altool --upload-app -t macos -f \"$EXPORT_DIR\"/*.pkg \\"
+  echo "        --apiKey <KEY_ID> --apiIssuer <ISSUER_ID>"
+  echo "    (or drag the .pkg into Transporter.app). CI does this unattended —"
+  echo "    see .github/workflows/release-appstore.yml and docs/release-automation.md."
   exit 0
 fi
 
@@ -78,7 +79,8 @@ xcrun notarytool submit "$ZIP" --keychain-profile "$NOTARY_PROFILE" --wait
 
 echo "==> Stapling + verifying"
 xcrun stapler staple "$APP"
-codesign --verify --deep --strict --verbose=2 "$APP"
+# Apple discourages --deep for verification; verify the app, then assess Gatekeeper.
+codesign --verify --strict --verbose=2 "$APP"
 spctl --assess --type execute --verbose=2 "$APP"
 
 # Fresh zip of the stapled app for distribution.
