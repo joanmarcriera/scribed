@@ -1,7 +1,7 @@
 // Mac App Store edition — App Sandbox + security-scoped bookmarks (entitlements
-// wired in Phase D via Scribed-AppStore.entitlements). Donate link allowed but
+// wired in Phase D via Seshat-AppStore.entitlements). Donate link allowed but
 // gated to the US storefront at runtime (Phase D).
-PRODUCT_BUNDLE_IDENTIFIER = uk.co.riera.scribed
-CODE_SIGN_ENTITLEMENTS = Scribed-AppStore.entitlements
+PRODUCT_BUNDLE_IDENTIFIER = uk.co.riera.seshat
+CODE_SIGN_ENTITLEMENTS = Seshat-AppStore.entitlements
 ENABLE_HARDENED_RUNTIME = YES
 SWIFT_ACTIVE_COMPILATION_CONDITIONS = $(inherited) EDITION_APPSTORE DONATE_ENABLED

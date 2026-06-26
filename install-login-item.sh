@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-LABEL="com.scribed.app"
+LABEL="com.seshat.app"
 PLIST="$HOME/Library/LaunchAgents/${LABEL}.plist"
 REPO_DIR="$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
-LOG_DIR="$HOME/Library/Logs/Scribed"
+LOG_DIR="$HOME/Library/Logs/Seshat"
 LOG_FILE="$LOG_DIR/watcher.log"
 UV_BIN="$(command -v uv || true)"
 

@@ -1,12 +1,12 @@
 # Privacy
 
-Scribed is designed so that your recordings and notes stay on machines you
-control. This document describes exactly what data Scribed produces, where it is
+Seshat is designed so that your recordings and notes stay on machines you
+control. This document describes exactly what data Seshat produces, where it is
 stored, and what (if anything) leaves your Mac.
 
-## What data Scribed produces
+## What data Seshat produces
 
-For each recording it processes, Scribed creates:
+For each recording it processes, Seshat creates:
 
 - **A WAV copy** of the recording, produced locally by `ffmpeg` from your
   original file.
@@ -26,13 +26,13 @@ For each recording it processes, Scribed creates:
   `~/Library/Application Support/MeetingNotes/`.
 - **Logs**: `~/Library/Logs/MeetingNotes/watcher.log`.
 
-All of these are written in **cleartext** under your home directory. Scribed
+All of these are written in **cleartext** under your home directory. Seshat
 does not encrypt them; protect them with your normal macOS account and disk
 encryption (FileVault).
 
 ## What leaves your machine, and where it goes
 
-Scribed talks to exactly two network endpoints, both of which **you** configure:
+Seshat talks to exactly two network endpoints, both of which **you** configure:
 
 1. **Your WhisperX server** — the locally converted WAV is uploaded here for
    transcription.
@@ -42,11 +42,11 @@ Scribed talks to exactly two network endpoints, both of which **you** configure:
 These endpoints can be on `localhost`, on your own network, or remote. Because
 the audio and transcript leave your Mac to reach them, **only configure servers
 you operate or fully trust.** If you want everything to stay on your own Mac,
-run WhisperX and Ollama locally and point Scribed at `127.0.0.1`.
+run WhisperX and Ollama locally and point Seshat at `127.0.0.1`.
 
 ## No telemetry
 
-Scribed has **no telemetry and no phone-home**. It does not collect analytics,
+Seshat has **no telemetry and no phone-home**. It does not collect analytics,
 crash reports, usage statistics, or any other data, and it does not contact any
 server other than the WhisperX and Ollama URLs you set. The settings web page is
 bound to `127.0.0.1` only and is not reachable from the network.

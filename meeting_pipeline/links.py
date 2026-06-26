@@ -10,11 +10,11 @@ README badge) is hidden — the app never shows a dead link.
 
 from __future__ import annotations
 
-# Lemon Squeezy "Pay What You Want" checkout for the Scribed donations product
+# Lemon Squeezy "Pay What You Want" checkout for the Seshat donations product
 # (marcriera store). Verified live (HTTP 200).
 DONATE_URL: str = "https://marcriera.lemonsqueezy.com/checkout/buy/e71c4ce2-f423-4bb6-9883-268e2324035d"
 
-PROJECT_URL: str = "https://github.com/Joanmarcriera/scribed"
+PROJECT_URL: str = "https://github.com/Joanmarcriera/seshat"
 
 
 def donate_url() -> str:

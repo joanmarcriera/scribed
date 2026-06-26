@@ -20,7 +20,7 @@ from meeting_pipeline.settings_server import SettingsServer  # noqa: E402
 from meeting_pipeline.state import State, iter_pending  # noqa: E402
 
 CONFIG_PATH = (
-    Path.home() / "Library" / "Application Support" / "Scribed"
+    Path.home() / "Library" / "Application Support" / "Seshat"
     / "watcher-config.json"
 )
 
@@ -176,7 +176,7 @@ def main() -> int:
     first_run = not CONFIG_PATH.exists()
     cfg = load_config(CONFIG_PATH)
 
-    class ScribedApp(rumps.App):
+    class SeshatApp(rumps.App):
         def __init__(self):
             super().__init__("📝", quit_button=None)
             self.controller = WatcherController(
@@ -211,7 +211,7 @@ def main() -> int:
             # Only show Support when a donate link is configured (no dead links).
             if donate_url():
                 menu.append(
-                    rumps.MenuItem("Support Scribed…", callback=self._open_support))
+                    rumps.MenuItem("Support Seshat…", callback=self._open_support))
             menu += [
                 None,
                 rumps.MenuItem("Pause watching", callback=self._toggle_pause),
@@ -326,7 +326,7 @@ def main() -> int:
                 pass
             rumps.quit_application()
 
-    ScribedApp().run()
+    SeshatApp().run()
     return 0
 
 

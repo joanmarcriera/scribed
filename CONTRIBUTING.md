@@ -1,6 +1,6 @@
-# Contributing to Scribed
+# Contributing to Seshat
 
-Thanks for your interest in improving Scribed! This guide covers how to set up,
+Thanks for your interest in improving Seshat! This guide covers how to set up,
 test, and submit changes. By participating you agree to follow our
 [Code of Conduct](CODE_OF_CONDUCT.md).
 
@@ -55,7 +55,7 @@ On first run it opens the Settings page so you can configure your WhisperX and
 Ollama endpoints. You can also exercise the pipeline headlessly with:
 
 ```sh
-uv run scribed
+uv run seshat
 ```
 
 ## Shell scripts

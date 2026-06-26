@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 #
-# Build, sign, and (for Direct/Setapp) notarize a Scribed edition.
+# Build, sign, and (for Direct/Setapp) notarize a Seshat edition.
 # Companion to ../../docs/distribution-checklist.md.
 #
 # Usage:
-#   TEAM_ID=ABCDE12345 NOTARY_PROFILE=scribed-notary \
+#   TEAM_ID=ABCDE12345 NOTARY_PROFILE=seshat-notary \
 #     ./build-and-notarize.sh direct        # -> notarized, stapled .app + .zip
 #   TEAM_ID=... NOTARY_PROFILE=... ./build-and-notarize.sh setapp
 #   TEAM_ID=... ./build-and-notarize.sh appstore  # -> .pkg for App Store upload
@@ -13,7 +13,7 @@
 #   - "Developer ID Application" cert in the login keychain (direct/setapp)
 #   - "Apple Distribution" cert + Mac App Store provisioning profile (appstore)
 #   - notarytool keychain profile:
-#       xcrun notarytool store-credentials scribed-notary \
+#       xcrun notarytool store-credentials seshat-notary \
 #         --apple-id you@example.com --team-id TEAMID --password APP_SPECIFIC_PW
 set -euo pipefail
 
@@ -30,7 +30,7 @@ case "$EDITION" in
 esac
 
 BUILD_DIR="build/release-$EDITION"
-ARCHIVE="$BUILD_DIR/Scribed.xcarchive"
+ARCHIVE="$BUILD_DIR/Seshat.xcarchive"
 EXPORT_DIR="$BUILD_DIR/export"
 PLIST="$BUILD_DIR/exportOptions.plist"
 
@@ -50,7 +50,7 @@ cat > "$PLIST" <<PLIST
 PLIST
 
 echo "==> Archiving ($EDITION)"
-xcodebuild -project Scribed.xcodeproj -scheme Scribed -configuration Release \
+xcodebuild -project Seshat.xcodeproj -scheme Seshat -configuration Release \
   -xcconfig "$XCCONFIG" -archivePath "$ARCHIVE" \
   DEVELOPMENT_TEAM="$TEAM_ID" archive
 
@@ -68,8 +68,8 @@ if [ "$EDITION" = "appstore" ]; then
 fi
 
 : "${NOTARY_PROFILE:?set NOTARY_PROFILE (notarytool keychain profile) to notarize}"
-APP="$EXPORT_DIR/Scribed.app"
-ZIP="$BUILD_DIR/Scribed-$EDITION.zip"
+APP="$EXPORT_DIR/Seshat.app"
+ZIP="$BUILD_DIR/Seshat-$EDITION.zip"
 
 echo "==> Notarizing"
 ditto -c -k --keepParent "$APP" "$ZIP"

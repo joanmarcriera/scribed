@@ -1,5 +1,5 @@
 [project]
-name = "scribed"
+name = "seshat"
 version = "0.1.0"
 description = "A macOS menu-bar app that turns meeting recordings into structured Markdown notes, using your own WhisperX and Ollama servers."
 readme = "README.md"
@@ -16,11 +16,11 @@ dependencies = [
 dev = ["pytest>=8.0.0"]
 
 [project.scripts]
-scribed = "meeting_pipeline.cli:main"
+seshat = "meeting_pipeline.cli:main"
 
 [project.urls]
-Homepage = "https://github.com/Joanmarcriera/scribed"
-Issues = "https://github.com/Joanmarcriera/scribed/issues"
+Homepage = "https://github.com/Joanmarcriera/seshat"
+Issues = "https://github.com/Joanmarcriera/seshat/issues"
 
 [build-system]
 requires = ["hatchling"]

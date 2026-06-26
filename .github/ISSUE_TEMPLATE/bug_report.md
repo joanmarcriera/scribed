@@ -19,7 +19,7 @@ What you expected to happen.
 
 **Environment**
 - macOS version:
-- Scribed version / commit:
+- Seshat version / commit:
 - WhisperX endpoint reachable? (yes/no)
 - Ollama endpoint + model:
 

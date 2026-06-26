@@ -1,5 +1,10 @@
 # Trademark / Name-Availability Assessment — "Scribed" (macOS app)
 
+> **DECISION (2026-06-26):** Acting on this assessment, the product was **renamed from
+> "Scribed" to "Seshat"** (Egyptian goddess of writing/records). This document is kept as the
+> record of *why*. A formal clearance search on "Seshat" is still recommended before store
+> submission; initial screening found no Mac transcription/note app using the name.
+
 **Subject:** A macOS menu-bar app named **Scribed** that turns meeting recordings into
 Markdown notes via the user's own WhisperX + Ollama servers (local-first, bring-your-own-server).
 

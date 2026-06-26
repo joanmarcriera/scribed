@@ -1,6 +1,6 @@
-# XcodeGen spec — generates Scribed.xcodeproj (committable, diff-able).
+# XcodeGen spec — generates Seshat.xcodeproj (committable, diff-able).
 # Regenerate after editing:  cd apple && xcodegen generate
-name: Scribed
+name: Seshat
 options:
   bundleIdPrefix: uk.co.riera
   deploymentTarget:
@@ -14,29 +14,29 @@ settings:
     DEVELOPMENT_TEAM: ""
     CODE_SIGN_STYLE: Manual
 packages:
-  ScribedCore:
-    path: ScribedCore
+  SeshatCore:
+    path: SeshatCore
 targets:
-  Scribed:
+  Seshat:
     type: application
     platform: macOS
     configFiles:
       Debug: configs/Direct.xcconfig
       Release: configs/Direct.xcconfig
     dependencies:
-      - package: ScribedCore
+      - package: SeshatCore
     sources:
       - path: Sources
     settings:
       base:
         GENERATE_INFOPLIST_FILE: YES
         INFOPLIST_KEY_LSUIElement: YES
-        INFOPLIST_KEY_CFBundleDisplayName: Scribed
+        INFOPLIST_KEY_CFBundleDisplayName: Seshat
         INFOPLIST_KEY_NSHumanReadableCopyright: "© 2026 Joan Marc Riera Duocastella · MIT"
 schemes:
-  Scribed:
+  Seshat:
     build:
       targets:
-        Scribed: all
+        Seshat: all
     run:
       config: Debug

@@ -1,6 +1,6 @@
 # Roadmap
 
-Scribed's distribution plan moves from a source-based GitHub release toward
+Seshat's distribution plan moves from a source-based GitHub release toward
 easy package-manager installs and, eventually, a notarized Mac app on Setapp.
 Each phase is more involved than the last.
 
@@ -14,9 +14,9 @@ This is where the project is today.
 
 ## Phase 2 — Homebrew
 
-Make Scribed installable with standard tooling.
+Make Seshat installable with standard tooling.
 
-- Ensure Scribed is cleanly **pip/uv-installable** — the `scribed` entry point
+- Ensure Seshat is cleanly **pip/uv-installable** — the `seshat` entry point
   is already defined in `pyproject.toml`.
 - Ship a **Homebrew CLI formula** that declares `ffmpeg` as a dependency, so
   `brew install` brings the transcription prerequisite along.
@@ -46,6 +46,6 @@ is a substantial body of work:
 
 ### Naming note
 
-The working name **"Scribed"** must be **trademark-checked** before any public
+The working name **"Seshat"** must be **trademark-checked** before any public
 distribution, and a real **reverse-DNS bundle identifier** chosen (the current
-`com.scribed.app` label in the LaunchAgent is a placeholder).
+`com.seshat.app` label in the LaunchAgent is a placeholder).

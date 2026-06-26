@@ -190,7 +190,7 @@ def render_settings_page(cfg: dict, *, saved: bool = False,
     donate = donate_url()
     support_card = (
         '<div class="card"><h2>Support</h2>'
-        '<div class="row"><span>Scribed is free &amp; open-source. '
+        '<div class="row"><span>Seshat is free &amp; open-source. '
         'If it saves you time, you can chip in.</span>'
         f'<a class="donate" href="{_esc(donate)}" target="_blank" '
         'rel="noopener">Buy me a coffee ☕</a></div></div>'
@@ -200,7 +200,7 @@ def render_settings_page(cfg: dict, *, saved: bool = False,
     return f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Scribed — Settings</title>
+<title>Seshat — Settings</title>
 <style>
   :root {{ color-scheme: light dark; }}
   body {{ font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
@@ -240,7 +240,7 @@ def render_settings_page(cfg: dict, *, saved: bool = False,
   .dot.up {{ background:#34c759; }} .dot.down {{ background:#ff3b30; }}
 </style></head>
 <body><div class="wrap">
-  <h1>📝 Scribed — Settings</h1>
+  <h1>📝 Seshat — Settings</h1>
   {banner}
   <form method="post" action="/save">
     <input type="hidden" name="_token" value="{_esc(token)}">

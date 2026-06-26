@@ -4,10 +4,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-**Scribed** is a **macOS menu-bar app** (built on `rumps`/AppKit) that watches a folder for
+**Seshat** is a **macOS menu-bar app** (built on `rumps`/AppKit) that watches a folder for
 audio/video recordings and turns each new one into a structured Markdown meeting note. The
 pipeline is: `ffmpeg` (local WAV convert) → **WhisperX** server (transcribe) → clean →
-**Ollama** server (summarise) → validate → write note. Scribed bundles no AI servers; it only
+**Ollama** server (summarise) → validate → write note. Seshat bundles no AI servers; it only
 talks to the WhisperX/Ollama URLs the user configures. macOS only.
 
 > **Two implementations live here.** The repo root is the original **Python** app (the
@@ -25,7 +25,7 @@ uv sync --extra dev          # install dev deps (pytest) — needed before runni
 uv run pytest -q             # run the full test suite (what CI runs)
 uv run pytest tests/test_pipeline.py            # run one test file
 uv run pytest tests/test_pipeline.py::test_name # run one test
-uv run scribed               # headless: process all pending recordings once, then exit
+uv run seshat               # headless: process all pending recordings once, then exit
                              #   (non-zero exit if any recording failed/deferred)
 uv run python menubar_app.py # run the GUI menu-bar app locally
 ./install-login-item.sh      # install the LaunchAgent (runs menubar_app.py at login)
@@ -39,14 +39,14 @@ Native app (`apple/`, requires `brew install xcodegen`):
 
 ```sh
 cd apple && xcodegen generate            # REQUIRED after adding/removing .swift files
-cd apple/ScribedCore && swift test       # fast headless core/parity tests
-cd apple && xcodebuild -project Scribed.xcodeproj -scheme Scribed \
+cd apple/SeshatCore && swift test       # fast headless core/parity tests
+cd apple && xcodebuild -project Seshat.xcodeproj -scheme Seshat \
   -configuration Debug -derivedDataPath build CODE_SIGNING_ALLOWED=NO build
 # build a specific edition: add  -xcconfig configs/{Direct,Setapp,AppStore}.xcconfig
 ```
 
-`Scribed.xcodeproj` is **generated and gitignored** — regenerate from `apple/project.yml`. The
-UI-free pipeline logic lives in the `ScribedCore` SwiftPM package (Config/State/cleaning/
+`Seshat.xcodeproj` is **generated and gitignored** — regenerate from `apple/project.yml`. The
+UI-free pipeline logic lives in the `SeshatCore` SwiftPM package (Config/State/cleaning/
 validation/prompt/clients/AudioConverter/Pipeline), unit-tested without Xcode or servers.
 
 ## Architecture
@@ -54,11 +54,11 @@ validation/prompt/clients/AudioConverter/Pipeline), unit-tested without Xcode or
 Two entry points share one pipeline package:
 
 - **`menubar_app.py`** (GUI) — the `rumps` app + `WatcherController`. The controller is the
-  GUI-agnostic core (timers, locks, status, deferred-set tracking, marker cleanup); `ScribedApp`
+  GUI-agnostic core (timers, locks, status, deferred-set tracking, marker cleanup); `SeshatApp`
   is the thin rumps shell that wires menu items to it. A `rumps.Timer` scans on the configured
   interval; a second 2-second "reconciler" timer applies interval/toggle changes made elsewhere
   (e.g. the settings page) without restarting the app.
-- **`meeting_pipeline/cli.py`** (`scribed` script) — headless single-shot of the same pipeline,
+- **`meeting_pipeline/cli.py`** (`seshat` script) — headless single-shot of the same pipeline,
   for testing/cron.
 
 `meeting_pipeline/` is a self-contained package; the GUI imports from it. Module roles:
@@ -76,7 +76,7 @@ Two entry points share one pipeline package:
 - **`config.py`** — JSON config load/save with `deep_merge` onto `DEFAULTS` (so new default keys
   appear for old configs). **Path semantics matter:** `resolve_path()` expands `~`, honors
   absolute paths as-is, and resolves *bare-relative* values under `DATA_BASE_DIR`
-  (`~/Documents/Scribed`) — never against the repo/install dir.
+  (`~/Documents/Seshat`) — never against the repo/install dir.
 - **`transcribe.py`** — `convert_to_wav` (ffmpeg) + `transcribe` (POST to WhisperX). Resolves
   ffmpeg via `PATH` then Homebrew fallbacks, because a launchd login agent doesn't inherit the
   shell `PATH`.
@@ -103,10 +103,10 @@ Two entry points share one pipeline package:
 
 ## Runtime data locations (not in the repo)
 
-- Config: `~/Library/Application Support/Scribed/watcher-config.json`
-- Work/cache + `.state` markers: `~/Library/Application Support/Scribed/work`
-- Default recordings/notes: `~/Documents/Scribed/recordings` and `.../notes`
-- Logs: `~/Library/Logs/Scribed/watcher.log`
+- Config: `~/Library/Application Support/Seshat/watcher-config.json`
+- Work/cache + `.state` markers: `~/Library/Application Support/Seshat/work`
+- Default recordings/notes: `~/Documents/Seshat/recordings` and `.../notes`
+- Logs: `~/Library/Logs/Seshat/watcher.log`
 
 Recordings, notes, WAVs, and `watcher-config.json` are gitignored — never commit user data.
 
