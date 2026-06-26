@@ -37,7 +37,10 @@ struct SettingsView: View {
                         Text(secs % 60 == 0 ? "\(secs / 60)m" : "\(secs)s").tag(secs)
                     }
                 }
-                TextField("Watch folder", text: $draft.recordingsDir)
+                HStack {
+                    TextField("Watch folder", text: $draft.recordingsDir)
+                    HelpButton(text: "Seshat watches this folder and turns each new recording into a note. Drop files here, or point it at an iCloud Drive / Google Drive folder so recordings sync in automatically.")
+                }
                 TextField("Notes folder", text: $draft.notesDir)
                 TextField("Work folder", text: $draft.workDir)
                 TextField("Note owner", text: $draft.noteOwner)
@@ -47,27 +50,48 @@ struct SettingsView: View {
             }
 
             Section("Transcription (WhisperX)") {
-                TextField("WhisperX URL", text: $draft.transcribe.whisperxURL)
+                HStack {
+                    TextField("WhisperX URL", text: $draft.transcribe.whisperxURL)
+                    ServerHelpButton(kind: .whisperx)
+                }
                 Picker("Model", selection: $draft.transcribe.model) {
                     ForEach(Self.models, id: \.self) { Text($0).tag($0) }
                 }
                 TextField("Language", text: $draft.transcribe.language)
-                Stepper("Number of speakers: \(draft.transcribe.numSpeakers)",
-                        value: $draft.transcribe.numSpeakers, in: 1...10)
-                Toggle("Diarize (separate speakers)", isOn: $draft.transcribe.diarize)
+                HStack {
+                    Stepper("Number of speakers: \(draft.transcribe.numSpeakers)",
+                            value: $draft.transcribe.numSpeakers, in: 1...10)
+                    HelpButton(text: "Roughly how many people are speaking. Helps WhisperX separate and label speakers.")
+                }
+                HStack {
+                    Toggle("Diarize (separate speakers)", isOn: $draft.transcribe.diarize)
+                    HelpButton(text: "Label who said what (SPEAKER_00, SPEAKER_01…). Turn off for a single-speaker recording.")
+                }
             }
 
             Section("Summarisation (Ollama)") {
-                Picker("Backend", selection: $draft.summarise.backend) {
-                    Text("Server (GPU)").tag("server")
-                    Text("Local Mac").tag("local")
+                HStack {
+                    Picker("Backend", selection: $draft.summarise.backend) {
+                        Text("Server (GPU)").tag("server")
+                        Text("Local Mac").tag("local")
+                    }
+                    HelpButton(text: "‘Server (GPU)’ uses the Server Ollama URL; ‘Local Mac’ uses the Local Ollama URL on this Mac. If the server is offline you can allow the local fallback below.")
                 }
-                TextField("Server Ollama URL", text: $draft.summarise.server.url)
+                HStack {
+                    TextField("Server Ollama URL", text: $draft.summarise.server.url)
+                    ServerHelpButton(kind: .ollama)
+                }
                 TextField("Server model", text: $draft.summarise.server.model)
-                TextField("Local Ollama URL", text: $draft.summarise.local.url)
+                HStack {
+                    TextField("Local Ollama URL", text: $draft.summarise.local.url)
+                    ServerHelpButton(kind: .ollama)
+                }
                 TextField("Local model", text: $draft.summarise.local.model)
-                Toggle("Allow local Ollama fallback (loads this Mac)",
-                       isOn: $draft.summarise.allowLocalFallback)
+                HStack {
+                    Toggle("Allow local Ollama fallback (loads this Mac)",
+                           isOn: $draft.summarise.allowLocalFallback)
+                    HelpButton(text: "If the Server Ollama is unreachable, summarise on this Mac instead (uses local CPU/RAM).")
+                }
             }
 
             Section("Connections") {

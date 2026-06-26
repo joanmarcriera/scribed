@@ -1,9 +1,10 @@
 import Foundation
 import AVFoundation
 
-public struct AudioConverterError: Error, Equatable {
+public struct AudioConverterError: Error, LocalizedError, Equatable {
     public let message: String
     public init(_ message: String) { self.message = message }
+    public var errorDescription: String? { message }
 }
 
 /// Native replacement for the ffmpeg call in `meeting_pipeline/transcribe.py`

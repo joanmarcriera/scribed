@@ -17,6 +17,7 @@ final class WatcherController: ObservableObject {
     @Published private(set) var allowLocalOllama: Bool
     @Published private(set) var watchIntervalSeconds: Int
     @Published private(set) var hasLastNote = false
+    @Published private(set) var lastError: String?
 
     private(set) var config: Config
     private let deps: PipelineDeps
@@ -130,6 +131,7 @@ final class WatcherController: ObservableObject {
             lastDone = (result.base, result.notePath, result.transcriptPath)
             hasLastNote = true
             unseenDone = true
+            lastError = nil
             notifier.notify(title: "✅ Transcribed & summarised",
                             body: "\(result.base) — note ready.")
         case .deferredNeedLocal:
@@ -141,6 +143,7 @@ final class WatcherController: ObservableObject {
             }
         case .failed:
             status = "Failed: \(result.base)"
+            lastError = "\(result.base): \(result.message)"
             notifier.notify(title: "Processing failed", body: "\(result.base): \(result.message)")
         case .skipped:
             break
@@ -237,6 +240,9 @@ final class WatcherController: ObservableObject {
         allowLocalOllama = newConfig.summarise.allowLocalFallback
         persist()
         if newConfig.summarise.allowLocalFallback && !wasAllowed { deferredBases.removeAll() }
+        // New settings may fix a prior failure — clear failed markers and retry.
+        lastError = nil
+        processNow()
     }
 
     func testConnections(_ cfg: Config) async -> (whisperx: Bool, ollamaServer: Bool, ollamaLocal: Bool) {

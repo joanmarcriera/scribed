@@ -1,8 +1,9 @@
 import Foundation
 
-public struct WhisperXError: Error, Equatable {
+public struct WhisperXError: Error, LocalizedError, Equatable {
     public let message: String
     public init(_ message: String) { self.message = message }
+    public var errorDescription: String? { message }
 }
 
 /// Port of the WhisperX call in `meeting_pipeline/transcribe.py`: POST the WAV to

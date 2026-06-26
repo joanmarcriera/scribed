@@ -9,6 +9,9 @@ struct StatusMenu: View {
 
     var body: some View {
         Text(controller.status)
+        if let error = controller.lastError {
+            Text("⚠︎ \(error)")
+        }
 
         Divider()
 

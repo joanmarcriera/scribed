@@ -139,10 +139,16 @@ public enum Pipeline {
             return ProcessResult(status: .done, base: base, message: "note written",
                                  notePath: notePath, transcriptPath: transcriptPath)
         } catch {
-            state.markFailed(base, "\(error)")
+            let message = cleanMessage(error)
+            state.markFailed(base, message)
             let np = FileManager.default.fileExists(atPath: notePath.path) ? notePath : nil
-            return ProcessResult(status: .failed, base: base, message: "\(error)", notePath: np)
+            return ProcessResult(status: .failed, base: base, message: message, notePath: np)
         }
+    }
+
+    /// Prefer a typed error's human message over the default struct description.
+    static func cleanMessage(_ error: Error) -> String {
+        (error as? LocalizedError)?.errorDescription ?? "\(error)"
     }
 }
 
