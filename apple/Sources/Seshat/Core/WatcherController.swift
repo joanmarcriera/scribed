@@ -34,6 +34,10 @@ final class WatcherController: ObservableObject {
     private var scanTask: Task<Void, Never>?
 
     static let intervalChoices = [10, 20, 60, 300]
+    /// "60s" → "1m"; shared by the menu and the settings picker.
+    static func intervalLabel(_ seconds: Int) -> String {
+        seconds % 60 == 0 ? "\(seconds / 60)m" : "\(seconds)s"
+    }
     private static let onboardedKey = "seshat.didOnboard"
     private static let localNetWarnedKey = "seshat.didWarnLocalNetwork"
 

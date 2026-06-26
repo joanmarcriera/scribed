@@ -23,7 +23,7 @@ struct StatusMenu: View {
 
         Menu("Watch interval") {
             ForEach(WatcherController.intervalChoices, id: \.self) { secs in
-                Button(Self.intervalLabel(secs)) { controller.setInterval(secs) }
+                Button(WatcherController.intervalLabel(secs)) { controller.setInterval(secs) }
             }
         }
 
@@ -75,9 +75,5 @@ struct StatusMenu: View {
             controller.togglePause()
         }
         Button("Quit") { NSApplication.shared.terminate(nil) }
-    }
-
-    private static func intervalLabel(_ seconds: Int) -> String {
-        seconds % 60 == 0 ? "\(seconds / 60)m" : "\(seconds)s"
     }
 }

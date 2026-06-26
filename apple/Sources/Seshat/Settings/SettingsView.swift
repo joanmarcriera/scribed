@@ -34,7 +34,7 @@ struct SettingsView: View {
             Section("General") {
                 Picker("Watch interval", selection: $draft.watchIntervalSeconds) {
                     ForEach(WatcherController.intervalChoices, id: \.self) { secs in
-                        Text(secs % 60 == 0 ? "\(secs / 60)m" : "\(secs)s").tag(secs)
+                        Text(WatcherController.intervalLabel(secs)).tag(secs)
                     }
                 }
                 HStack {
@@ -46,6 +46,8 @@ struct SettingsView: View {
                 TextField("Note owner", text: $draft.noteOwner)
                 TextField("Your speaker label", text: $draft.userSpeaker)
                 Toggle("Open at login", isOn: $openAtLogin)
+                    // Single-arg form: the two-param onChange is macOS 14+, but
+                    // the deployment target is 13.0 (so this doesn't warn either).
                     .onChange(of: openAtLogin) { controller.setOpenAtLogin($0) }
             }
 
@@ -136,7 +138,7 @@ struct SettingsView: View {
     }
 
     private func dot(_ label: String, _ state: Bool?) -> some View {
-        let color: Color = state == nil ? .gray : (state! ? .green : .red)
+        let color: Color = state.map { $0 ? .green : .red } ?? .gray
         return HStack(spacing: 6) {
             Circle().fill(color).frame(width: 9, height: 9)
             Text(label).font(.callout)
