@@ -9,7 +9,8 @@ enum Links {
     static let donateURLString = "https://marcriera.lemonsqueezy.com/checkout/buy/e71c4ce2-f423-4bb6-9883-268e2324035d"
 
     /// `owner/repo` — the single source of truth for the project + issue links.
-    static let repoSlug = "Joanmarcriera/seshat"
+    /// Lower-case to match the canonical GitHub login (avoids a 301 redirect).
+    static let repoSlug = "joanmarcriera/seshat"
     static let projectURLString = "https://github.com/\(repoSlug)"
 
     static let donateURL = URL(string: donateURLString)

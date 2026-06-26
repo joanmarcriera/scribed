@@ -6,15 +6,14 @@ import Foundation
 /// GitHub issue form with the title and body already populated.
 public enum IssueReport {
 
-    /// Characters left unescaped in a query value. RFC 3986 *unreserved* only —
-    /// deliberately excludes the sub-delimiters (`& = + #` …) that
-    /// `URLComponents.queryItems` would leave raw and thereby corrupt the query,
-    /// so any title/body (including Markdown with `&`) round-trips safely.
-    private static let queryValueAllowed: CharacterSet = {
-        var set = CharacterSet.alphanumerics
-        set.insert(charactersIn: "-._~")
-        return set
-    }()
+    /// Characters left unescaped in a query value: the RFC 3986 *unreserved* set,
+    /// ASCII-only. Deliberately spelled out rather than using
+    /// `CharacterSet.alphanumerics` (which also matches Unicode letters/digits, so
+    /// an accented character would slip through un-encoded) — this guarantees every
+    /// non-ASCII byte *and* the query sub-delimiters (`& = + #` …) is percent-
+    /// encoded, so any title/body round-trips and never corrupts the query.
+    private static let queryValueAllowed = CharacterSet(
+        charactersIn: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~")
 
     /// e.g. `githubNewIssueURL(repoSlug: "Joanmarcriera/seshat", title: …, body: …)`
     /// → `https://github.com/Joanmarcriera/seshat/issues/new?title=…&body=…`.

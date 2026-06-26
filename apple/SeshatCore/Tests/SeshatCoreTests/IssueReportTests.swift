@@ -28,4 +28,16 @@ final class IssueReportTests: XCTestCase {
         XCTAssertEqual(components.queryItems?.first { $0.name == "title" }?.value, title)
         XCTAssertEqual(components.queryItems?.first { $0.name == "body" }?.value, body)
     }
+
+    func testNonASCIIIsPercentEncodedAndRoundTrips() {
+        // Unicode letters must be encoded, not left raw (CharacterSet.alphanumerics would).
+        let title = "Café crash — ñoño"
+        let body = "user: José · host: münchen"
+        let url = IssueReport.githubNewIssueURL(repoSlug: "owner/repo", title: title, body: body)
+        XCTAssertNotNil(url)
+        XCTAssertTrue(url!.absoluteString.allSatisfy { $0.isASCII }, url!.absoluteString)  // no raw bytes leak
+        let components = URLComponents(url: url!, resolvingAgainstBaseURL: false)!
+        XCTAssertEqual(components.queryItems?.first { $0.name == "title" }?.value, title)
+        XCTAssertEqual(components.queryItems?.first { $0.name == "body" }?.value, body)
+    }
 }
