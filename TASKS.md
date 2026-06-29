@@ -16,6 +16,11 @@
 
 ## Done
 
+- [x] Add website guidance for recording legalities and recording tools.
+  Completion criteria: homepage includes jurisdiction-neutral legal nuance, a
+  not-legal-advice caveat, source links, and free/open recorder recommendations
+  including Notely Voice from F-Droid.
+
 - [x] Add static website source under `ops/site`.
   Completion criteria: homepage, support, privacy, feedback, CSS, and screenshot
   asset exist locally.

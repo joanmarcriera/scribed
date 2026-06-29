@@ -17,6 +17,8 @@
       <a class="brand" href="/"><span class="brand-mark"></span><span>Distavo</span></a>
       <div class="nav-links">
         <a href="#how">How it works</a>
+        <a href="#responsible-recording">Legalities</a>
+        <a href="#recording-tools">Recording tools</a>
         <a href="/privacy/">Privacy</a>
         <a href="/support/">Support</a>
         <a href="/feedback/">Feedback</a>
@@ -65,6 +67,82 @@
           <span class="tag rust">Summarise</span>
           <h3>Write Markdown notes with your model.</h3>
           <p>The cleaned transcript goes to your Ollama server, then Distavo writes a structured note to your notes folder.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="responsible-recording" class="section">
+      <div class="section-title">
+        <h2>Recordings are useful. They are also regulated.</h2>
+        <p>Distavo can turn recordings into notes, but it cannot decide whether a meeting should be recorded, shared, stored, or used as evidence. Treat recording law, privacy law, workplace rules, and court procedure as separate questions.</p>
+      </div>
+
+      <div class="notice">
+        <strong>Not legal advice.</strong>
+        <span>Check the rules where you and the other participants are located before recording sensitive calls, meetings, medical notes, interviews, HR conversations, or anything you may later want to rely on formally.</span>
+      </div>
+
+      <div class="grid legal-grid">
+        <article class="card">
+          <span class="tag blue">Consent</span>
+          <h3>Permission rules vary by place.</h3>
+          <p>Some places allow one participant to record. Others require everyone on the call or in the room to agree. Cross-border calls can make this more complex.</p>
+        </article>
+        <article class="card">
+          <span class="tag green">Purpose</span>
+          <h3>Making a note is not the same as publishing it.</h3>
+          <p>Even when recording is allowed, later transcription, sharing, workplace use, or data retention may need a lawful basis, notice, policy, or explicit consent.</p>
+        </article>
+        <article class="card">
+          <span class="tag rust">Evidence</span>
+          <h3>Court or tribunal use is a separate hurdle.</h3>
+          <p>A recording that was lawful to make may still be challenged, excluded, limited, or require permission before it can be used in a trial, grievance, or regulated process.</p>
+        </article>
+      </div>
+
+      <div class="source-links" aria-label="Recording law reference links">
+        <a href="https://www.rcfp.org/reporters-recording-guide/">US state-by-state recording guide</a>
+        <a href="https://gdpr-info.eu/art-6-gdpr/">GDPR lawful-basis reference</a>
+        <a href="https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/employment/monitoring-workers/">UK worker-monitoring guidance</a>
+      </div>
+    </section>
+
+    <section id="recording-tools" class="section tool-section">
+      <div class="section-title">
+        <h2>Free and open tools that pair well with Distavo.</h2>
+        <p>Distavo watches a folder, so any recorder that can save or export audio into your watched folder can fit the workflow. Prefer tools that are open source, export ordinary audio files, and work offline when possible.</p>
+      </div>
+
+      <div class="tool-grid">
+        <article class="tool-card">
+          <span class="tool-platform">Android · F-Droid</span>
+          <h3><a href="https://f-droid.org/packages/com.module.notelycompose.android/">Notely Voice</a></h3>
+          <p>GPLv3 notes and AI voice transcription app. Good when you want voice notes, imported-audio transcription, export, and phone-first capture before moving files to your Distavo folder.</p>
+        </article>
+        <article class="tool-card">
+          <span class="tool-platform">Android · F-Droid</span>
+          <h3><a href="https://f-droid.org/packages/org.fossify.voicerecorder/">Fossify Voice Recorder</a></h3>
+          <p>Open-source, ad-free recorder for simple voice capture. Useful when you want a minimal phone recorder and will let Distavo do the transcription and summarisation later.</p>
+        </article>
+        <article class="tool-card">
+          <span class="tool-platform">Android · F-Droid</span>
+          <h3><a href="https://f-droid.org/packages/org.codeberg.genericpers0n.soundrecorderplus/">Sound Recorder Plus</a></h3>
+          <p>Basic GPLv3 sound recorder with straightforward recording management and high-quality recording defaults.</p>
+        </article>
+        <article class="tool-card">
+          <span class="tool-platform">Android · F-Droid</span>
+          <h3><a href="https://f-droid.org/packages/com.dimowner.audiorecorder/">Audio Recorder</a></h3>
+          <p>Apache-licensed recorder that can create M4A or WAV files, tune sample rate and bitrate, and share or import recordings.</p>
+        </article>
+        <article class="tool-card">
+          <span class="tool-platform">macOS · Windows · Linux</span>
+          <h3><a href="https://obsproject.com/">OBS Studio</a></h3>
+          <p>Free, open-source option for screen, window, microphone, and system-audio capture when you need more than a voice memo.</p>
+        </article>
+        <article class="tool-card">
+          <span class="tool-platform">macOS · Windows · Linux</span>
+          <h3><a href="https://www.audacityteam.org/">Audacity</a></h3>
+          <p>Free, open-source audio recorder and editor for cleaning, trimming, converting, or exporting recordings before Distavo processes them.</p>
         </article>
       </div>
     </section>

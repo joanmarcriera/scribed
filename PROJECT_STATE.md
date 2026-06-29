@@ -15,10 +15,16 @@ edition as far as possible without vendor-dashboard assets.
   `x86_64 arm64` app with the expected Setapp Info.plist keys.
 - `swift test` passes for `apple/DistavoCore`.
 - `ops/site` is deployed and live at `https://distavo.com/`.
+- Homepage now includes recording-law nuance and a free/open recorder tools
+  section, including Notely Voice from F-Droid.
 
 ## Current implementation state
 
 - `ops/site` is deployed as the public static website.
+- The website explains that recording consent, data/privacy use, sharing, and
+  court/tribunal admissibility are separate legal questions.
+- The website recommends open/free recording tools that can export audio into
+  the watched folder workflow.
 - The Setapp build uses `apple/Setapp-Info.plist` for Setapp-only metadata,
   including `NSUpdateSecurityPolicy`.
 - `apple/scripts/build-and-notarize.sh setapp` packages a notarized app with
@@ -52,6 +58,19 @@ edition as far as possible without vendor-dashboard assets.
   `/tmp/distavo-site-backup-20260629T165646Z`.
 - Live HTTPS check for `https://distavo.com/`, `/privacy/`, `/support/`,
   `/feedback/`, `/assets/site.css`, and `/assets/settings.png` — passed.
+- Static website link/asset/title/meta/parser check after adding legal/tools
+  sections — passed.
+- `git diff --check` after legal/tools website update — passed.
+- Verified current F-Droid metadata for Notely Voice package
+  `com.module.notelycompose.android`: package exists, license is
+  `GPL-3.0-only`, source is published, and voice/audio transcription features
+  are listed.
+- Clean `ops/site` tarball redeployed to `/opt/stacks/core/distavo`.
+  Current remote backup is `/tmp/distavo-site-backup-20260629T170546Z`.
+- Live HTTPS check for the new homepage legal/tools copy and updated CSS —
+  passed.
+- Added legal and recorder source links resolve over HTTPS. The ICO link was
+  checked with `GET` because it rejects `HEAD`.
 
 ## Unresolved risks
 
@@ -66,4 +85,4 @@ edition as far as possible without vendor-dashboard assets.
 
 ## Next recommended action
 
-Commit and push the completed slice.
+Commit and push the legal/tools homepage update.
