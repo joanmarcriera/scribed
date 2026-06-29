@@ -20,12 +20,20 @@ Entity Manager + an n8n workflow + the static form.
   `__SAMPLE App` template set; `claude` "API Integration" role granted create/read/edit on all three
   (verified the least-privilege key reads/writes them).
 
+- ✅ **n8n award→CRM wired + tested.** `distavo-feedback` = Webhook(onReceived+CORS) → Code
+  **"Guard & shape"** (drop honeypot; `+7` if accepted, `+0` if short/no-email; `productKey`→productId,
+  Distavo=`6a422f087c2e763e0`) → HTTP **"Create CFeedback"** (POST `/api/v1/CFeedback` via the n8n
+  credential **"EspoCRM API (Distavo)"**). A POST creates a `CFeedback` (accepted, award 7) — verified.
+  - **Simplification:** the Code node can't use the authed-request helper and hardcoding the key is
+    disallowed, so it's one HTTP node + the credential. To stay branch-free, **`CFeedback` is the
+    event log** with the helper's **`email`** stored on it; **balance = Σ accepted `awardDays`**
+    (derived). **`CHelperAccount` rollup + Contact-linking are not auto-populated yet** (add later via
+    a scheduled reconcile or HTTP+IF nodes).
+
 **Remaining for the reward/thank loop:**
-1. **Wire the award→CRM nodes** into the `distavo-feedback` workflow (webhook + CORS already live):
-   `+7` award → upsert Contact by email → create `CFeedback` → upsert `CHelperAccount`
-   (`creditDays += award`). Use API paths `/api/v1/CFeedback` etc. with the `claude` key.
-2. **SMTP credential in n8n** for the thank-you email (Marc's cross-project plan) — then add the
-   email node.
+1. **SMTP credential in n8n** for `marc@riera.co.uk` (Google Workspace — App Password → n8n SMTP cred),
+   then add an EmailSend node after "Create CFeedback" emailing the helper the thank-you.
+2. *(later)* `CHelperAccount` rollup + Contact-linking enrichment.
 
 
 ## 1. EspoCRM entities — ✅ BUILT (2026-06-29)
