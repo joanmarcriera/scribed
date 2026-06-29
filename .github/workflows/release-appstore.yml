@@ -285,5 +285,22 @@ jobs:
             exit 1
           fi
           echo "Uploading $pkg"
+          upload_log="$RUNNER_TEMP/altool-upload.log"
+          set +e
           xcrun altool --upload-app -f "$pkg" -t macos \
-            --apiKey "$ASC_API_KEY_ID" --apiIssuer "$ASC_API_ISSUER_ID"
+            --apiKey "$ASC_API_KEY_ID" --apiIssuer "$ASC_API_ISSUER_ID" 2>&1 | tee "$upload_log"
+          altool_status=${PIPESTATUS[0]}
+          set -e
+          if [ "$altool_status" -ne 0 ]; then
+            echo "::error::altool upload failed (exit $altool_status)"
+            exit "$altool_status"
+          fi
+          # A clean exit is NOT enough: altool returns 0 even when Apple flags the
+          # build as TestFlight-ineligible because the main bundle is missing a
+          # provisioning profile (ITMS-90889). That warning is precisely the bug we
+          # are fixing, so treat it as a hard failure — a green release must mean a
+          # TestFlight-eligible build was delivered, not merely "accepted".
+          if grep -Eq '90889|missing a provisioning profile' "$upload_log"; then
+            echo "::error::Upload accepted but Apple reports the main bundle is missing a provisioning profile (ITMS-90889) — build is not TestFlight-eligible"
+            exit 1
+          fi
