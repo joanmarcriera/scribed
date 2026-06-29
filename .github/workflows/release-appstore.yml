@@ -97,7 +97,7 @@ jobs:
             CODE_SIGN_STYLE=Automatic \
             archive
 
-      - name: Export and upload to App Store Connect
+      - name: Export the App Store package
         run: |
           cd apple
           cat > build/ExportOptions-AppStore.plist <<PLIST
@@ -106,7 +106,7 @@ jobs:
           <plist version="1.0"><dict>
             <key>method</key><string>app-store-connect</string>
             <key>teamID</key><string>${APPLE_TEAM_ID}</string>
-            <key>destination</key><string>upload</string>
+            <key>destination</key><string>export</string>
             <key>signingStyle</key><string>automatic</string>
           </dict></plist>
           PLIST
@@ -118,3 +118,15 @@ jobs:
             -authenticationKeyPath "$RUNNER_TEMP/private_keys/AuthKey_${ASC_API_KEY_ID}.p8" \
             -authenticationKeyID "$ASC_API_KEY_ID" \
             -authenticationKeyIssuerID "$ASC_API_ISSUER_ID"
+
+      - name: Upload to App Store Connect
+        run: |
+          cd apple
+          # altool reads the key from a standard private_keys dir; xcodebuild's own
+          # destination=upload uploader does not reliably honor -authenticationKey*.
+          mkdir -p "$HOME/.appstoreconnect/private_keys"
+          cp "$RUNNER_TEMP/private_keys/AuthKey_${ASC_API_KEY_ID}.p8" "$HOME/.appstoreconnect/private_keys/"
+          pkg="$(ls build/export-appstore/*.pkg | head -1)"
+          echo "Uploading $pkg"
+          xcrun altool --upload-app -f "$pkg" -t macos \
+            --apiKey "$ASC_API_KEY_ID" --apiIssuer "$ASC_API_ISSUER_ID"
