@@ -318,7 +318,10 @@ final class WatcherController: ObservableObject {
     func testConnections(_ cfg: Config) async -> (whisperx: Bool, ollamaServer: Bool, ollamaLocal: Bool) {
         let whisper = WhisperXClient()
         let ollama = OllamaClient()
-        async let whisperxOK = whisper.reachable(cfg.transcribe.whisperxURL)
+        // With the embedded engine there is no WhisperX to probe — skip the
+        // TCP-timeout wait (the dot is hidden in that mode anyway).
+        async let whisperxOK = cfg.transcribe.backend == "embedded"
+            ? true : whisper.reachable(cfg.transcribe.whisperxURL)
         async let serverOK = ollama.reachable(cfg.summarise.server.url)
         async let localOK = ollama.reachable(cfg.summarise.local.url)
         return (await whisperxOK, await serverOK, await localOK)

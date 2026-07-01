@@ -51,9 +51,9 @@ struct SettingsView: View {
                 TextField("Note owner", text: $draft.noteOwner)
                 TextField("Your speaker label", text: $draft.userSpeaker)
                 Toggle("Open at login", isOn: $openAtLogin)
-                    // Single-arg form: the two-param onChange is macOS 14+, but
-                    // the deployment target is 13.0 (so this doesn't warn either).
-                    .onChange(of: openAtLogin) { controller.setOpenAtLogin($0) }
+                    .onChange(of: openAtLogin) { _, enabled in
+                        controller.setOpenAtLogin(enabled)
+                    }
             }
 
             Section("Transcription") {
