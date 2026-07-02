@@ -9,10 +9,6 @@ name: Submit to App Review (manual)
 #   ASC_API_KEY_ID, ASC_API_ISSUER_ID, ASC_API_KEY_P8_BASE64
 
 on:
-  # TEMPORARY (remove before merge): staged live test approved by Marc —
-  # runs for real but stops after attaching the build (nothing submitted).
-  push:
-    branches: ["feat/appstore-auto-submit"]
   workflow_dispatch:
     inputs:
       version:
