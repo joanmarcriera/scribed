@@ -50,9 +50,8 @@ jobs:
           ASC_API_KEY_P8_BASE64: ${{ secrets.ASC_API_KEY_P8_BASE64 }}
           INPUT_VERSION: ${{ inputs.version }}
           INPUT_BUILD_NUMBER: ${{ inputs.build_number }}
-          # TEMPORARY (remove with the push trigger): live to attach on push.
-          INPUT_DRY_RUN: ${{ inputs.dry_run || 'false' }}
-          INPUT_UNTIL: ${{ inputs.until || 'attach' }}
+          INPUT_DRY_RUN: ${{ inputs.dry_run }}
+          INPUT_UNTIL: ${{ inputs.until }}
         run: |
           set -euo pipefail
           # Default to a dry run unless explicitly disabled, so a push-triggered
